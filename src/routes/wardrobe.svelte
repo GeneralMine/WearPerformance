@@ -47,6 +47,7 @@
 		font-weight: bold;
 		text-align: center;
 		border-bottom: 1px solid #ccc;
+		margin-bottom: 0.5rem;
 	}
 	.listBar {
 		display: flex;

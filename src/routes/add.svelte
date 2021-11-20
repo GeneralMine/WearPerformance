@@ -1,13 +1,9 @@
 <script>
-	import { goto } from '$app/navigation';
 	import Button from '$lib/Common/Button.svelte';
-	import { readObject, writeObject } from '$lib/localstorage';
-	import TabViewHeader from '$lib/Views/TabView/TabViewHeader.svelte';
-	import TabViewHeaderItem from '$lib/Views/TabView/TabViewHeaderItem.svelte';
-	import { onMount } from 'svelte';
 
-	let supported = true;
-	let selectedFileUploadMethod = 'UPLOAD';
+	/* Database */
+	import { readObject, writeObject } from '$lib/localstorage';
+
 	let db = readObject('db');
 
 	function add() {
@@ -22,17 +18,17 @@
 		goto('/wardrobe');
 	}
 
-	/* Camera Stuff */
+	/* Camera */
+	import { onMount } from 'svelte';
+
 	let videoEl;
-	let loading = false;
+	let canvasEl;
+	let loading = true;
+	let captured = false;
+	let error;
+
 	onMount(async () => {
 		try {
-			if ('mediaDevices' in navigator) {
-				supported = true;
-			} else {
-				supported = false;
-				return;
-			}
 			loading = true;
 			const stream = await navigator.mediaDevices.getUserMedia({
 				video: true
@@ -40,54 +36,92 @@
 			videoEl.srcObject = stream;
 			videoEl.play();
 			loading = false;
-		} catch (error) {
+		} catch (err) {
+			error = err;
 			console.log(error);
 		}
 	});
+
+	function capture() {
+		captured = !captured;
+		canvasEl.width = videoEl.videoWidth;
+		canvasEl.height = videoEl.videoHeight;
+		canvasEl.getContext('2d').drawImage(videoEl, 0, 0);
+	}
+
+	function accept() {
+		const data = canvasEl.toDataURL('image/png');
+		console.log(data);
+	}
+
+	function deny() {
+		captured = !captured;
+	}
 </script>
 
-<Button on:click={add}>Add</Button>
+<div class="addPage">
+	<div class="headerBar">Add new clothing</div>
 
-{#if supported}
-	<TabViewHeader>
-		<TabViewHeaderItem
-			selected={selectedFileUploadMethod === 'Upload'}
-			on:click={() => (selectedFileUploadMethod = 'Upload')}>Upload</TabViewHeaderItem
-		>
-		<TabViewHeaderItem
-			selected={selectedFileUploadMethod === 'Drag-And-Drop'}
-			on:click={() => (selectedFileUploadMethod = 'Drag-And-Drop')}>Drag-And-Drop</TabViewHeaderItem
-		>
-		<TabViewHeaderItem
-			selected={selectedFileUploadMethod === 'Copy-Paste'}
-			on:click={() => (selectedFileUploadMethod = 'Copy-Paste')}>Copy-Paste</TabViewHeaderItem
-		>
-		<TabViewHeaderItem
-			selected={selectedFileUploadMethod === 'URL'}
-			on:click={() => (selectedFileUploadMethod = 'URL')}>URL</TabViewHeaderItem
-		>
-	</TabViewHeader>
-	{#if selectedFileUploadMethod === 'Upload'}
-		<!-- https://developers.google.com/web/fundamentals/media/capturing-images#file_input -->
-		<input type="file" accept="image/*" />
-	{:else if selectedFileUploadMethod === 'Drag-And-Drop'}
-		<!-- TODO: Drag-And-Drop https://developers.google.com/web/fundamentals/media/capturing-images#drag_and_drop -->
-	{:else if selectedFileUploadMethod === 'Copy-Paste'}
-		<!-- TODO: Copy-Paste https://developers.google.com/web/fundamentals/media/capturing-images#paste_from_clipboard -->
-	{:else if selectedFileUploadMethod === 'URL'}
-		<!-- TODO: URL https://developers.google.com/web/fundamentals/media/capturing-images#ask_for_a_url -->
-	{/if}
-{:else}
+	<div class="camera">
+		<!-- svelte-ignore a11y-media-has-caption -->
+		<video class:hidden={captured} bind:this={videoEl} />
+		<canvas class:hidden={!captured} bind:this={canvasEl} />
+	</div>
+
+	<div class="buttonRow">
+		{#if captured}
+			<Button on:click={accept}>Accept</Button>
+			<Button on:click={deny}>Deny</Button>
+		{:else}
+			<Button on:click={capture}>Capture</Button>
+		{/if}
+	</div>
+
 	{#if loading}
-		<h1>CARGANDO</h1>
+		loading...
 	{/if}
-	<!-- svelte-ignore a11y-media-has-caption -->
-	<video bind:this={videoEl} />
-{/if}
+	{#if error}
+		<code>{JSON.stringify(error, null, 4)}</code>
+	{/if}
+</div>
 
 <style>
-	video {
+	.addPage {
+		display: flex;
+		flex-direction: column;
 		width: 100%;
 		height: 100%;
+	}
+	.headerBar {
+		font-size: 1.5em;
+		font-weight: bold;
+		text-align: center;
+		border-bottom: 1px solid #ccc;
+		margin-bottom: 0.5rem;
+	}
+	.camera {
+		flex: 1;
+	}
+	video {
+		display: flex;
+		top: 0%;
+		width: 100%;
+		height: auto;
+	}
+	canvas {
+		display: flex;
+		top: 0%;
+		width: 100%;
+		height: auto;
+	}
+	.hidden {
+		display: none;
+	}
+	.buttonRow {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		margin-top: 1rem;
 	}
 </style>
