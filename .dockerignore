@@ -1,0 +1,21 @@
+# Node
+node_modules
+
+# Github
+.github
+
+# Internal
+.internal
+
+# Database
+db
+db.zip
+
+# Env
+.env
+
+# Docker
+docker-compose.yml
+
+wearperformance.raiser.dev.conf
+docs
