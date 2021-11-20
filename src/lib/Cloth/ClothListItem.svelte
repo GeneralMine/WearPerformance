@@ -1,5 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
+	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 
 	export let cloth;
 </script>
@@ -15,7 +16,7 @@
 			<div class="clothListItemInfoMiddleRight">Stat 2: y</div>
 		</div>
 		<div class="clothListItemInfoBottom">
-			<div class="clothListItemInfoBottomProgressbar">ProgressBar</div>
+			<ProgressBar small={true} min="0" max="100" value={Math.random() * 100} />
 		</div>
 	</div>
 </div>
@@ -25,6 +26,7 @@
 		display: flex;
 		flex-direction: row;
 		padding: 0.25rem;
+		padding-bottom: 0.4rem;
 		margin: 0.5rem;
 		border-radius: 10px;
 		box-shadow: 0px 0px 10px rgb(161, 161, 161);
@@ -53,8 +55,5 @@
 	}
 	.clothListItemInfoBottom {
 		width: 100%;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
 	}
 </style>

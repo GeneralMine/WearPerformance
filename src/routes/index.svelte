@@ -1,5 +1,6 @@
 <script>
 	import Button from '$lib/Common/Button.svelte';
+	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 </script>
 
 <svelte:head>
@@ -13,7 +14,7 @@
 
 	<div class="globalStats">
 		<h3>Overall footprint performance</h3>
-		<div class="progressBar">Progress Bar</div>
+		<ProgressBar min="0" max="100" value="50" />
 		<p>Stat1: Leider Geil</p>
 		<p>Stat2: Zum Glück scheiße</p>
 	</div>

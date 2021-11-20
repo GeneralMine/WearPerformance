@@ -1,6 +1,7 @@
 {
 	"short_name": "WearPerformance",
 	"name": "WearPerformance",
+	"description": "Lofi to lofi beats, while using the scratchpad to list down tasks and thoughts",
 	"display": "standalone",
 	"start_url": "/",
 	"scope": "/",
@@ -26,6 +27,5 @@
 				}
 			]
 		}
-	],
-	"description": "Lofi to lofi beats, while using the scratchpad to list down tasks and thoughts"
+	]
 }
