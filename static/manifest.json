@@ -1,22 +1,31 @@
 {
-	"background_color": "#ffffff",
-	"theme_color": "#333333",
-	"name": "WearPerformance",
 	"short_name": "WearPerformance",
-	"display": "minimal-ui",
+	"name": "WearPerformance",
+	"display": "standalone",
 	"start_url": "/",
 	"scope": "/",
+	"background_color": "#ffffff",
+	"theme_color": "#3367D6",
 	"icons": [
 		{
 			"src": "favicon.png",
-			"sizes": "192x192",
-			"type": "image/png"
-		},
-		{
-			"src": "favicon.png",
-			"sizes": "512x512",
-			"type": "image/png"
+			"type": "image/png",
+			"sizes": "512x512"
 		}
 	],
-	"description": "WearPerformance an Integrative Quality Framework for Developing Industrial Smart Services"
+	"shortcuts": [
+		{
+			"name": "Your Wardrobe",
+			"short_name": "Wardrobe",
+			"description": "View your wardrobe",
+			"url": "/wardrobe",
+			"icons": [
+				{
+					"src": "/icons/favicon.png",
+					"sizes": "192x192"
+				}
+			]
+		}
+	],
+	"description": "Lofi to lofi beats, while using the scratchpad to list down tasks and thoughts"
 }
