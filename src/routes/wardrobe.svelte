@@ -27,6 +27,7 @@
 			{:else}
 				<p>No clothes yet</p>
 			{/each}
+			<div class="spacer" />
 		</ClothList>
 
 		<div class="footerBar">
@@ -52,6 +53,9 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0.5em;
+	}
+	.spacer {
+		height: 5rem;
 	}
 	.footerBar {
 		position: fixed;
