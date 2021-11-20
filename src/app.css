@@ -1,0 +1,233 @@
+@import '@fontsource/nunito-sans';
+:root {
+	font-family: Nunito, Nunito-Sans, system-ui, BlinkMacSystemFont, -apple-system, sans-serif;
+	--font-mono: 'Fira Mono', monospace;
+	/* Dark Theme */
+	--background-color: white; /* Background of the main content */
+	--nav-background-color: grey; /* Background of the Nav Bar */
+	--surface-color: gray; /* Surface for elements on each page*/
+	--primary-color: #25be20; /* Primary interaction color */
+	--error-color: #cf6679; /* Errors */
+
+	--heading-color: rgb(0, 0, 0);
+	--text-color: rgb(0, 0, 0);
+	--disabled-text-color: rgba(0, 0, 0, 0.7);
+}
+
+html {
+	overflow-y: auto;
+	scroll-behavior: smooth;
+}
+
+body {
+	background-color: var(--background-color);
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 14px;
+	line-height: 1.5;
+	color: var(--text-color);
+}
+
+@media (min-width: 400px) {
+	body {
+		font-size: 16px;
+	}
+}
+
+/*
+    Text
+*/
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	margin: 0 0 0.5em 0;
+	font-weight: 400;
+	line-height: 1.2;
+}
+
+h1 {
+	font-size: 1.67em;
+}
+
+a {
+	color: var(--text-color);
+}
+
+code {
+	font-family: menlo, inconsolata, monospace;
+	font-size: calc(1em - 2px);
+	padding: 0.2em 0.4em;
+	border-radius: 2px;
+}
+
+/* 
+    Input
+*/
+
+input {
+	width: 100%;
+	padding: 8px 16px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+input[type='radio'] {
+	cursor: pointer;
+}
+
+select {
+	height: 30px;
+}
+
+textarea {
+	width: 100%;
+	padding: 8px 16px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+/* 
+    Label
+*/
+
+label {
+	text-align: left;
+}
+
+/* 
+    clickArea
+*/
+
+.clickArea {
+	text-decoration: none;
+	cursor: pointer;
+	touch-action: manipulation;
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	border: 1px hidden var(--primary-color);
+	border-radius: 10px;
+}
+@media (min-width: 768px) {
+	.clickArea:hover {
+		outline: 1px inset var(--primary-color);
+		box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+		box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+	}
+}
+
+/* 
+    Text
+*/
+
+.textBlock {
+	hyphens: none;
+	text-align: justify;
+}
+
+/* 
+    Tables
+*/
+
+table {
+	width: 100%;
+	display: table;
+	overflow: hidden;
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+table td {
+	font-weight: 300;
+	border-width: 1px;
+	border-color: rgba(255, 255, 255, 0.2);
+	border-style: solid;
+	padding-left: 0.75rem;
+	padding-right: 0.75rem;
+	min-width: 56px;
+	height: 3.8125rem;
+}
+table td,
+table th {
+	vertical-align: middle;
+}
+table th {
+	font-weight: 800;
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	border-bottom-width: 2px;
+	border-color: rgba(255, 255, 255, 1);
+	padding: 0.75rem;
+	letter-spacing: 0.05em;
+}
+table tr {
+	background-color: var(--surface-color);
+}
+/*
+    Flex
+*/
+
+.row {
+	display: flex;
+	flex-direction: row;
+}
+.column {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-center {
+	justify-content: center;
+	align-items: center;
+}
+
+.flex-space-around {
+	justify-content: space-around;
+}
+
+.flex-end {
+	justify-content: flex-end;
+}
+
+/*
+	Fill
+*/
+
+.fill {
+	width: 100%;
+	height: 100%;
+}
+
+/*
+	Surface
+*/
+
+.surface {
+	background-color: var(--surface-color);
+	border-radius: 12px;
+	margin-bottom: 1em;
+	margin-left: 1em;
+	margin-right: 1em;
+}
+
+/*
+	Card
+*/
+
+.card {
+	background-color: var(--surface-color);
+	border-radius: 25px;
+}

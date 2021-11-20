@@ -1,57 +1,41 @@
 <script>
-import ClothTile from "$lib/Cloth/ClothTile.svelte";
-
-    let cloths = [];
-
-    let type = "";
-    let color = "";
-
-    function addToList() {
-        let newCloth = {
-            type,
-            color
-        }
-        cloths = [...cloths, newCloth];
-    }
+	import Button from '$lib/Common/Button.svelte';
 </script>
 
-<h1>Welche to WearPerformance</h1>
+<svelte:head>
+	<title>WearPerformance</title>
+</svelte:head>
 
-<h2>Your cloths</h2>
+<div class="indexPage">
+	<div>
+		<h1>Your clothing choices</h1>
+	</div>
 
-{#each cloths as cloth}
-    <ClothTile {cloth} ></ClothTile>
-{/each}
+	<div class="globalStats">
+		<h3>Overall footprint performance</h3>
+		<div class="progressBar">Progress Bar</div>
+		<p>Stat1: Leider Geil</p>
+		<p>Stat2: Zum Glück scheiße</p>
+	</div>
 
-<h2>Add your cloth</h2>
-
-<h3>Farbe</h3>
-<select bind:value={color}>
-    <option value="red">Red</option>
-    <option value="blue">Blue</option>
-    <option value="green">Green</option>
-</select>
-
-<h3>Typ</h3>
-<select bind:value={type}>
-    <option value="t-shirt">T-Shirt</option>
-    <option value="pulli">Pulli</option>
-    <option value="hose">Hose</option>
-</select>
-
-<button on:click={() => addToList()}>Hinzufügen</button>
+	<div class="buttons">
+		<Button url="/wardrobe">Your Wardrobe</Button>
+		<Button url="/log">Log my day</Button>
+	</div>
+</div>
 
 <style>
-    p {
-        font-size: 1.5rem;
-        color: red;
-    }
-
-    .cloth {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        margin: 1rem;
-    }
+	.indexPage {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		justify-content: space-between;
+	}
+	.buttons {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+	}
 </style>
