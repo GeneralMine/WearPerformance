@@ -16,12 +16,16 @@
 
 	let videoEl;
 	let canvasEl;
+	let ms = 0; // Material Score -> Lookuptable
+	let gw = 0; // Gewicht Score -> Lookuptable
+	let ts = 0; // Transport Score -> from how far away the product comes from
+	let goalNumber = 0; // Number of times an article has to be worn to be eco friendly
 	let loading = true;
 	let captured = false;
 	let error;
 	let persons = [];
 	let disabled = false;
-	let name = '',
+	let name = '',	
 		color = '',
 		material = '',
 		origin = '',
@@ -117,11 +121,18 @@
 		let person = persons[0];
 		let x, y, w, h;
 		if (selectedType === 'tshirt' || selectedType === 'pulli') {
+			// Lookup table part (temporary if statement construct)
+			if (selectedType === 'tshirt') {
+				gw = 2;
+			} else {
+				gw = 5;
+			}
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.1;
 			w = person.rectangle.w;
 			h = person.rectangle.h * 0.5;
 		} else if (selectedType === 'hose') {
+			gw = 4;
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.5;
 			w = person.rectangle.w;
@@ -156,6 +167,27 @@
 			alert('Please fill in all the fields');
 			return;
 		}
+
+		switch (material) {
+			case "Kunstoff":
+				ms = 5,5;
+				break;
+			case "Pelz":
+				ms = 7;
+				break;
+			case "Leder":
+				ms = 7;
+				break;
+			case "Baumwolle":
+				ms = 4,5;
+				break;
+			case "Bio-Baumwolle":
+				ms = 1;
+				break;
+		}
+
+		goalNumber = (ms*gw + ts) * 3;
+			
 		db.clothes.push({
 			id: db.clothes.length,
 			name,
@@ -165,7 +197,11 @@
 			origin,
 			score: 0,
 			wornCounter: 0,
-			img
+			img,
+			gw,
+			ms,
+			ts,
+			goalNumber
 		});
 		writeObject('db', db);
 		goto('/wardrobe');

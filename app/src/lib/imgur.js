@@ -1,5 +1,7 @@
-const REFRESH_TOKEN = 'dba8635162676a5f2008b93379fabc3dd3ccc55f';
-const ACCESS_TOKEN = '631da1d44ba239fc742bf3bbea1db0630cf59d1d';
+const REFRESH_TOKEN2 = 'dba8635162676a5f2008b93379fabc3dd3ccc55f';
+const ACCESS_TOKEN2 = '631da1d44ba239fc742bf3bbea1db0630cf59d1d';
+const ACCESS_TOKEN = '6289c0b9c678f5a105afffc33ca68112642f423e';
+const REFRESH_TOKEN = 'cb5e040b39dd663e0abe528535eaf19a4c21c638';
 
 const imgurURL = 'https://api.imgur.com/3/image';
 

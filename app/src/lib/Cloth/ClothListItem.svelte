@@ -19,6 +19,7 @@
 			<ProgressBar small={true} min="0" max="100" value={Math.random() * 100} />
 		</div>
 	</div>
+	<img src="/icons/loop-arrow.png" class="loopArrow" alt="" />
 </div>
 
 <style>
@@ -36,6 +37,17 @@
 		width: 100%;
 		height: 100%;
 		object-fit: scale-down;
+	}
+	.loopArrow {
+		width: 2rem;
+		height: 2rem;
+		border-left: rgb(161, 161, 161) solid 1px;
+		margin-left: 1rem;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		padding-left: 0.25rem;
+		height: 100%;
 	}
 	.clothListItemImg {
 		width: 30%;
