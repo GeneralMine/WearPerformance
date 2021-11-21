@@ -8,7 +8,7 @@
 	/* Camera */
 	import { onMount } from 'svelte';
 	/* Imgur */
-	import { uploadImage } from '$lib/imgur';
+	import { sendImageToAPI } from '$lib/api';
 	import { goto } from '$app/navigation';
 
 	let videoEl;
@@ -40,9 +40,9 @@
 	}
 
 	async function accept() {
-		const data = canvasEl.toDataURL('image/png');
+		const data = canvasEl.toDataURL();
 		console.log(data);
-		const res = await uploadImage(data);
+		const res = await sendImageToAPI(data);
 		console.log(res);
 		if (res.status === 200) {
 			db.clothes.push({
@@ -55,7 +55,7 @@
 			writeObject('db', db);
 			goto('/wardrobe');
 		} else {
-			console.log('Unable to upload to Imgur');
+			console.log('Unable to upload to Imgur', res);
 			error = res.data.error;
 		}
 	}

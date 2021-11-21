@@ -7,7 +7,7 @@
 
 <div class="clothListItemContainer clickArea" on:click={() => goto(`/cloth/${cloth.id}`)}>
 	<div class="clothListItemImg">
-		<img src="" alt="" />
+		<img src={cloth.img} alt="" />
 	</div>
 	<div class="clothListItemInfo">
 		<div class="clothListItemInfoTop">Brown T.H. Hoodie</div>
@@ -25,14 +25,20 @@
 	.clothListItemContainer {
 		display: flex;
 		flex-direction: row;
+		height: 6rem;
 		padding: 0.25rem;
 		padding-bottom: 0.4rem;
 		margin: 0.5rem;
 		border-radius: 10px;
 		box-shadow: 0px 0px 10px rgb(161, 161, 161);
 	}
+	img {
+		width: 100%;
+		height: 100%;
+	}
 	.clothListItemImg {
 		width: 30%;
+		padding: 0.3rem;
 	}
 	.clothListItemInfo {
 		height: 100%;

@@ -2,8 +2,18 @@ require('dotenv').config();
 // Express
 const express = require('express');
 const app = express();
-// Body Parser
-const cookieParser = require('cookie-parser');
+const multer = require('multer');
+
+const upload = multer({
+	dest: 'images',
+	limits: { fileSize: 1000000 },
+	fileFilter(req, file, cb) {
+		if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
+			cb(new Error('Please upload an image.'));
+		}
+		cb(undefined, true);
+	}
+});
 
 // Setup env
 const PORT = process.env.PORT || 23101;
@@ -28,7 +38,6 @@ const corsOptionsDebug = {
 
 async function startup() {
 	app.enable('trust proxy');
-	app.use(express.json());
 	if (!isDebug) {
 		app.use(cors(corsOptionsProduction));
 		console.log('CORS loaded in production!');
@@ -36,7 +45,6 @@ async function startup() {
 		app.use(cors(corsOptionsDebug));
 		console.log('CORS loaded in debug!');
 	}
-	app.use(cookieParser());
 
 	// Configure cors for all routes
 	app.options('*', cors());
@@ -45,8 +53,13 @@ async function startup() {
 	app.get('/', (req, res) => {
 		res.send('Go away!');
 	});
-	app.post('/', (req, res) => {
-		res.send('Hello World!');
+
+	app.post('/upload', upload.single('upload'), (req, res) => {
+		if (req.file) {
+			res.json(req.file);
+		} else {
+			console.log(res);
+		}
 	});
 
 	app.listen(PORT, () => {
