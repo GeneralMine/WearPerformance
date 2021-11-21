@@ -1,15 +1,12 @@
-const REFRESH_TOKEN = 'dba8635162676a5f2008b93379fabc3dd3ccc55f';
-const ACCESS_TOKEN = '631da1d44ba239fc742bf3bbea1db0630cf59d1d';
+const KEY = '87f42a45f8f745b2af73b30179fed3a2';
 
-const imgurURL = 'https://api.imgur.com/3/image';
+const azureURL =
+	'https://detectoraiv2.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest';
 
-export async function sendImageToAPI(image) {
-	const formData = new FormData();
-	formData.append('image', image.split(',')[1]);
-
+export async function getPersonFromAzure(imageURL) {
 	// Registration
-	console.log('Sending image to API', image);
-	const res = await fetch(imgurURL, {
+	console.log('Sending image to API', imageURL);
+	const res = await fetch(azureURL, {
 		method: 'POST',
 		mode: 'cors', // no-cors, *cors, same-origin
 		cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
@@ -17,9 +14,10 @@ export async function sendImageToAPI(image) {
 		redirect: 'follow', // manual, *follow, error
 		referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
 		headers: {
-			Authorization: 'Bearer ' + ACCESS_TOKEN
+			'Ocp-Apim-Subscription-Key': KEY,
+			'Content-Type': 'application/json'
 		},
-		body: formData
+		body: JSON.stringify({ url: imageURL })
 	});
 	return res.json();
 }

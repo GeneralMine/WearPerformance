@@ -8,7 +8,8 @@
 	/* Camera */
 	import { onMount } from 'svelte';
 	/* Imgur */
-	import { sendImageToAPI } from '$lib/api';
+	import { uploadImageToImgur } from '$lib/imgur';
+	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
 
 	let videoEl;
@@ -32,32 +33,59 @@
 		}
 	});
 
-	function capture() {
+	async function capture() {
 		captured = !captured;
 		canvasEl.width = videoEl.videoWidth;
 		canvasEl.height = videoEl.videoHeight;
 		canvasEl.getContext('2d').drawImage(videoEl, 0, 0);
+
+		// Get the image data and upload it to Imgur
+		const data = canvasEl.toDataURL();
+		const imageResponse = await uploadImageToImgur(data);
+		console.log(imageResponse);
+		if (imageResponse.status !== 200) {
+			console.log('Unable to upload to Imgur', imageResponse);
+			error = imageResponse.data.error;
+			return;
+		}
+
+		// Let azure find people in the imgur image
+		const imgURL = imageResponse.data.link;
+		const personResponse = await getPersonFromAzure(imgURL);
+		console.log(personResponse);
+
+		// Find all persons in the object detection
+		let persons = personResponse.objects
+			.filter((person) => person.confidence > 0.5 && person.object === 'person')
+			.sort((a, b) => b.confidence - a.confidence);
+		console.log('Got persons:', persons);
+		if (persons.length === 0) {
+			console.log('No person detected');
+			error = 'No person detected';
+			return;
+		}
+
+		// Draw bounding boxes
+		var ctx = canvasEl.getContext('2d');
+		for (let person of persons) {
+			ctx.beginPath();
+			ctx.lineWidth = '3';
+			ctx.strokeStyle = 'red';
+			ctx.rect(person.rectangle.x, person.rectangle.y, person.rectangle.w, person.rectangle.h);
+			ctx.stroke();
+		}
 	}
 
 	async function accept() {
-		const data = canvasEl.toDataURL();
-		console.log(data);
-		const res = await sendImageToAPI(data);
-		console.log(res);
-		if (res.status === 200) {
-			db.clothes.push({
-				id: db.clothes.slice(-1).id + 1,
-				name: 'Test',
-				type: 'test',
-				color: 'asd',
-				img: res.data.link
-			});
-			writeObject('db', db);
-			goto('/wardrobe');
-		} else {
-			console.log('Unable to upload to Imgur', res);
-			error = res.data.error;
-		}
+		db.clothes.push({
+			id: db.clothes.slice(-1).id + 1,
+			name: 'Test',
+			type: 'test',
+			color: 'asd',
+			img: res.data.link
+		});
+		writeObject('db', db);
+		goto('/wardrobe');
 	}
 
 	function deny() {
