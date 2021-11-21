@@ -140,6 +140,9 @@
 			name: 'Test',
 			type: 'test',
 			color: 'asd',
+			material: 'asd',
+			origin: 'asd',
+			score: 0,
 			img: imageResponse.data.link
 		});
 		writeObject('db', db);

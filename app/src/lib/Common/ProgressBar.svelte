@@ -1,8 +1,13 @@
 <script>
+	import { readObject, writeObject } from '$lib/localstorage';
+	let db = readObject('db');
+
 	export let max;
 	export let min;
 	export let value;
 	export let small = false;
+
+	// Access all clothes using "db.clothes"
 
 	// calculate percentage of the value between min and max
 	$: progress = Math.ceil(((value - min) / (max - min)) * 100);
