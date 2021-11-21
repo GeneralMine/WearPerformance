@@ -4,8 +4,7 @@ const azureURL =
 	'https://detectoraiv2.cognitiveservices.azure.com/vision/v3.2/detect?model-version=latest';
 
 export async function getPersonFromAzure(imageURL) {
-	// Registration
-	console.log('Sending image to API', imageURL);
+	console.log('Sending image to Azure...', imageURL);
 	const res = await fetch(azureURL, {
 		method: 'POST',
 		mode: 'cors', // no-cors, *cors, same-origin

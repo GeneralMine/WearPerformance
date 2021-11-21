@@ -11,7 +11,10 @@
 	<title>Item Info | WearPerformance</title>
 </svelte:head>
 
-<div class="clothPage">HTML goes here...</div>
+<div class="clothPage">
+	HTML goes here...
+	<div />
+</div>
 
 <style>
 	.clothPage {
