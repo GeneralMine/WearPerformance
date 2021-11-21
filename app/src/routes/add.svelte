@@ -21,6 +21,9 @@
 	let error;
 	let persons = [];
 	let disabled = false;
+	let name, color, material, origin, img;
+	let accepted = false;
+	let type = selectedType;
 
 	onMount(async () => {
 		try {
@@ -87,7 +90,7 @@
 			ctx.lineWidth = '3';
 			ctx.strokeStyle = 'red';
 			let x, y, w, h;
-			if (selectedType === 't-shirt' || selectedType === 'pulli') {
+			if (selectedType === 'tshirt' || selectedType === 'pulli') {
 				x = person.rectangle.x;
 				y = person.rectangle.y + person.rectangle.h * 0.1;
 				w = person.rectangle.w;
@@ -109,7 +112,7 @@
 		// Calculate bounding box for cloth
 		let person = persons[0];
 		let x, y, w, h;
-		if (selectedType === 't-shirt' || selectedType === 'pulli') {
+		if (selectedType === 'tshirt' || selectedType === 'pulli') {
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.1;
 			w = person.rectangle.w;
@@ -134,23 +137,29 @@
 			error = imageResponse.data.error;
 			return;
 		}
+		img = imageResponse.data.link;
 
-		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1 || 0,
-			name: 'Test',
-			type: 'test',
-			color: 'asd',
-			material: 'asd',
-			origin: 'asd',
-			score: 0,
-			img: imageResponse.data.link
-		});
-		writeObject('db', db);
-		goto('/wardrobe');
+		accepted = true;
 	}
 
 	function deny() {
 		captured = !captured;
+		accepted = false;
+	}
+
+	function finish() {
+		db.clothes.push({
+			id: db.clothes.slice(-1).id + 1 || 0,
+			name,
+			type,
+			color,
+			material,
+			origin,
+			score: 0,
+			img
+		});
+		writeObject('db', db);
+		goto('/wardrobe');
 	}
 </script>
 
@@ -161,7 +170,25 @@
 <div class="addPage">
 	<div class="headerBar">Add new Item</div>
 
-	<div class="camera">
+	<div class="inputs" class:hidden={!accepted}>
+		<img class="acceptedImage" src={img} alt="Item" />
+		<select bind:value={type}>
+			<option value="hose">Hose</option>
+			<option value="tshirt">T-Shirt</option>
+			<option value="pulli">Pulli</option>
+		</select>
+		<input placeholder="Color" bind:value={color} />
+		<input placeholder="Name" bind:value={name} />
+		<input placeholder="Origin" bind:value={origin} />
+		<select bind:value={material}>
+			<option value="kunststoff">Kunststoff</option>
+			<option value="leder">Leder</option>
+			<option value="Pelz">Pelz</option>
+			<option value="Baumwolle">Baumwolle</option>
+			<option value="bioBaumwolle">Bio Baumwolle</option>
+		</select>
+	</div>
+	<div class="camera" class:hidden={accepted}>
 		{#if loading}
 			loading...
 		{/if}
@@ -175,17 +202,31 @@
 			<span class="error">{JSON.stringify(error, null, 4)}</span>
 		{/if}
 		<div class="buttonRow">
-			{#if captured}
-				<Button {disabled} on:click={accept}>Accept</Button>
-				<Button on:click={deny}>Deny</Button>
+			{#if captured && !accepted}
+				<img on:click={accept} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+				<img on:click={deny} src="/icons/cross.png" alt="deny" />
+			{:else if accepted}
+				<img on:click={finish} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+				<img on:click={deny} src="/icons/cross.png" alt="deny" />
 			{:else}
-				<Button on:click={capture}>Capture</Button>
+				<img on:click={capture} src="/icons/cambutton.png" alt="Cam" />
 			{/if}
 		</div>
 	</div>
 </div>
 
 <style>
+	.inputs {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+	}
+	.acceptedImage {
+		width: 100%;
+		height: auto;
+	}
 	.addPage {
 		display: flex;
 		flex-direction: column;
@@ -234,5 +275,11 @@
 		color: red;
 		font-weight: bold;
 		text-align: center;
+	}
+	img {
+		width: 4rem;
+		height: 4rem;
+		padding-left: 4rem;
+		padding-right: 4rem;
 	}
 </style>

@@ -2,14 +2,14 @@
 module.exports = {
 	types: {
 		pulli: 5,
-		't-shirt': 2,
+		tshirt: 2,
 		hose: 4
 	},
 	materials: {
-		Kunststoff: 5.5,
-		Leder: 7,
-		Pelz: 8,
-		Baumwolle: 4.5,
-		'Bio-Baumwolle': 1
+		kunststoff: 5.5,
+		leder: 7,
+		pelz: 8,
+		baumwolle: 4.5,
+		bioBaumwolle: 1
 	}
 };
