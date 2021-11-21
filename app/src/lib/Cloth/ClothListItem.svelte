@@ -3,6 +3,7 @@
 	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 
 	export let cloth;
+	export let log = false;
 </script>
 
 <div class="clothListItemContainer clickArea" on:click={() => goto(`/cloth/${cloth.id}`)}>
@@ -19,7 +20,7 @@
 			<ProgressBar small={true} min="0" max="100" value={Math.random() * 100} />
 		</div>
 	</div>
-	<img src="/icons/loop-arrow.png" class="loopArrow" alt="" />
+	<img src="/icons/loop-arrow.png" class="loopArrow" class:log alt="" />
 </div>
 
 <style>
@@ -38,6 +39,9 @@
 		height: 100%;
 		object-fit: scale-down;
 	}
+	.log {
+		visibility: hidden;
+	}
 	.loopArrow {
 		width: 2rem;
 		height: 2rem;
@@ -48,6 +52,7 @@
 		justify-content: center;
 		padding-left: 0.25rem;
 		height: 100%;
+		visibility: hidden;
 	}
 	.clothListItemImg {
 		width: 30%;

@@ -1,6 +1,8 @@
-<script>
-	import Button from '$lib/Common/Button.svelte';
+<script context="module">
+	export const ssr = false;
+</script>
 
+<script>
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
 	let db = readObject('db');
@@ -12,6 +14,7 @@
 	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+
 	const selectedType = $page.query.get('type');
 
 	let videoEl;
@@ -25,7 +28,7 @@
 	let error;
 	let persons = [];
 	let disabled = false;
-	let name = '',	
+	let name = '',
 		color = '',
 		material = '',
 		origin = '',
@@ -169,25 +172,25 @@
 		}
 
 		switch (material) {
-			case "Kunstoff":
-				ms = 5,5;
+			case 'Kunstoff':
+				(ms = 5), 5;
 				break;
-			case "Pelz":
+			case 'Pelz':
 				ms = 7;
 				break;
-			case "Leder":
+			case 'Leder':
 				ms = 7;
 				break;
-			case "Baumwolle":
-				ms = 4,5;
+			case 'Baumwolle':
+				(ms = 4), 5;
 				break;
-			case "Bio-Baumwolle":
+			case 'Bio-Baumwolle':
 				ms = 1;
 				break;
 		}
 
-		goalNumber = (ms*gw + ts) * 3;
-			
+		goalNumber = (ms * gw + ts) * 3;
+
 		db.clothes.push({
 			id: db.clothes.length,
 			name,
@@ -206,6 +209,93 @@
 		writeObject('db', db);
 		goto('/wardrobe');
 	}
+	const originsList = {
+		germany: 1,
+		afghanistan: 4921,
+		albania: 1339,
+		armenia: 2924,
+		argentina: 12280,
+		austria: 503,
+		australia: 14466,
+		azerbaijan: 3094,
+		'bosnia and herzegovina': 971,
+		barbados: 7478,
+		bangladesh: 7291,
+		belgium: 426,
+		bulgaria: 1472,
+		bolivia: 10345,
+		brazil: 9432,
+		bahamas: 7723,
+		bhutan: 6987,
+		belarus: 1216,
+		canada: 6751,
+		switzerland: 510,
+		chile: 12514,
+		china: 7224,
+		colombia: 9246,
+		'costa rica': 9455,
+		cuba: 8041,
+		'cape verde': 5025,
+		'czech republic': 385,
+		denmark: 570,
+		dominica: 7416,
+		'dominican republic': 7750,
+		algeria: 2676,
+		egypt: 3205,
+		spain: 1617,
+		finland: 1512,
+		france: 816,
+		'united kingdom': 1033,
+		ghana: 4920,
+		gibraltar: 2090,
+		greenland: 3438,
+		gambia: 4791,
+		greece: 1610,
+		croatia: 761,
+		hungary: 794,
+		indonesia: 11011,
+		ireland: 1292,
+		israel: 3002,
+		india: 6752,
+		iraq: 3341,
+		iran: 4064,
+		iceland: 2277,
+		italy: 1046,
+		jordan: 3121,
+		japan: 9048,
+		'north korea': 8154,
+		'south korea': 8570,
+		liechtenstein: 449,
+		montenegro: 1157,
+		macedonia: 1368,
+		netherlands: 372,
+		norway: 1042,
+		'new zealand': 18364,
+		poland: 607,
+		portugal: 1951,
+		romania: 1213,
+		serbia: 1120,
+		russia: 5421,
+		sweden: 1119,
+		singapore: 10125,
+		slovenia: 650,
+		slovakia: 717,
+		syria: 2918,
+		swaziland: 8881,
+		thailand: 8677,
+		turkey: 2355,
+		ukraine: 1514,
+		'united states': 7861,
+		vietnam: 9328,
+		yemen: 5204,
+		'south africa': 9170,
+		zimbabwe: 8015,
+		georgia: 2666,
+		guatemala: 9369,
+		luxembourg: 341,
+		mexico: 9448,
+		taiwan: 9293
+	};
 </script>
 
 <svelte:head>
@@ -224,7 +314,11 @@
 		</select>
 		<input required placeholder="Color" bind:value={color} />
 		<input required placeholder="Name" bind:value={name} />
-		<input required placeholder="Origin" bind:value={origin} />
+		<select required bind:value={origin}>
+			{#each Object.keys(originsList) as key}
+				<option value={key}>{key}</option>
+			{/each}
+		</select>
 		<select required bind:value={material}>
 			<option value="kunststoff">Kunststoff</option>
 			<option value="leder">Leder</option>
