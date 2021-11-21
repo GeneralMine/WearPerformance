@@ -10,4 +10,4 @@ RUN npm ci
 
 COPY . .
 
-ENTRYPOINT ["node /api/src/index.js"]
+ENTRYPOINT npm start
