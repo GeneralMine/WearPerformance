@@ -5,6 +5,7 @@
 <script>
 	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 	import { navigating, page } from '$app/stores';
+	import Button from '$lib/Common/Button.svelte';
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
 	let db = readObject('db');
@@ -38,14 +39,22 @@ import { destroy_block } from 'svelte/internal';
 		<p>Origin: {cloth.origin}</p>
 		<ProgressBar min="0" max="100" value="50" />
 		</div>
+		<br>
+		<div class="buttons">
+			<Button color="red" url="/log">Delete</Button>
+			<Button url="/wardrobe">Back</Button>
+		</div>
 	</div>
+
+	
 {/if}
 
 <style>
 	.clothPage {
-		width: 100%;
+		width: 50%;
 		height: 100%;
 		text-align: center;
+		margin: auto;
 	}
 
 	.clothListItemImg {
@@ -53,7 +62,6 @@ import { destroy_block } from 'svelte/internal';
   		margin: auto;
 		padding: 0.3rem;
 		text-align: center;
-		width: 50%;
 	}
 
 	img {
@@ -67,7 +75,13 @@ import { destroy_block } from 'svelte/internal';
   		margin: auto;
 		padding: 0.3rem;
 		text-align: center;
-		width: 50%;
+	}
+
+	.buttons {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		color: blue;
 	}
 
 	#wrapper {
