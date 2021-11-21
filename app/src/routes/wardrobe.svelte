@@ -84,10 +84,11 @@
 	}
 	.headerBar {
 		font-size: 1.5em;
-		font-weight: bold;
+		font-weight: 700;
 		text-align: center;
 		border-bottom: 1px solid #ccc;
 		margin-bottom: 0.5rem;
+
 	}
 	.listBar {
 		display: flex;

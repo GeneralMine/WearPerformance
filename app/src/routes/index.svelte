@@ -9,14 +9,13 @@
 
 <div class="indexPage">
 	<div>
-		<h1>Your clothing choices</h1>
+		<br>
+		<div class="format">Your clothing choices</div>
 	</div>
 
 	<div class="globalStats">
 		<h3>Overall footprint performance</h3>
 		<ProgressBar min="0" max="100" value="50" />
-		<p>Stat1: Leider Geil</p>
-		<p>Stat2: Zum Glück scheiße</p>
 	</div>
 
 	<div class="buttons">
@@ -38,5 +37,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
+	}
+
+	.format {
+		font-weight: bold;
+		font-size: 2rem;
 	}
 </style>
