@@ -103,7 +103,7 @@
 		bottom: 8%;
 		width: 90%;
 		height: 3rem;
-		//display: flex;
+		/*display: flex;*/
 		justify-content: center;
 		align-items: center;
 	}
