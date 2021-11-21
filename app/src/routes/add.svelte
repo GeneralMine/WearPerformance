@@ -21,7 +21,11 @@
 	let error;
 	let persons = [];
 	let disabled = false;
-	let name, color, material, origin, img;
+	let name = '',
+		color = '',
+		material = '',
+		origin = '',
+		img = '';
 	let accepted = false;
 	let type = selectedType;
 
