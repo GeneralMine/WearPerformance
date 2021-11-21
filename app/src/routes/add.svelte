@@ -148,6 +148,10 @@
 	}
 
 	function finish() {
+		if (name === '' || color === '' || material === '' || origin === '' || img === '') {
+			alert('Please fill in all the fields');
+			return;
+		}
 		db.clothes.push({
 			id: db.clothes.slice(-1).id + 1 || 0,
 			name,
@@ -172,15 +176,15 @@
 
 	<div class="inputs" class:hidden={!accepted}>
 		<img class="acceptedImage" src={img} alt="Item" />
-		<select bind:value={type}>
+		<select required bind:value={type}>
 			<option value="hose">Hose</option>
 			<option value="tshirt">T-Shirt</option>
 			<option value="pulli">Pulli</option>
 		</select>
-		<input placeholder="Color" bind:value={color} />
-		<input placeholder="Name" bind:value={name} />
-		<input placeholder="Origin" bind:value={origin} />
-		<select bind:value={material}>
+		<input required placeholder="Color" bind:value={color} />
+		<input required placeholder="Name" bind:value={name} />
+		<input required placeholder="Origin" bind:value={origin} />
+		<select required bind:value={material}>
 			<option value="kunststoff">Kunststoff</option>
 			<option value="leder">Leder</option>
 			<option value="Pelz">Pelz</option>
