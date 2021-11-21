@@ -189,7 +189,7 @@
 		goalNumber = (ms*gw + ts) * 3;
 			
 		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1 || 0,
+			id: db.clothes.length,
 			name,
 			type,
 			color,

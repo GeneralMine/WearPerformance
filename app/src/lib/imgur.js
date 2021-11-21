@@ -8,7 +8,7 @@ export async function uploadImageToImgur(image) {
 	formData.append('image', image.split(',')[1]);
 
 	// Registration
-	console.log('Sending image to API', image);
+	console.log('Sending image to Imgur...');
 	const res = await fetch(imgurURL, {
 		method: 'POST',
 		mode: 'cors', // no-cors, *cors, same-origin

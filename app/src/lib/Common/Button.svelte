@@ -6,7 +6,9 @@
 	export let alternative = false;
 	export let round = false;
 	export let disabled = false;
+	export let color = "#25be20";
 	import { createEventDispatcher } from 'svelte';
+import { append } from 'svelte/internal';
 
 	const dispatch = createEventDispatcher();
 </script>
@@ -16,6 +18,7 @@
 	class:alternative
 	class:round
 	{disabled}
+	style="background-color:{color};"
 	on:click={() => {
 		if (url) {
 			goto(url);
