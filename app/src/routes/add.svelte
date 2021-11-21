@@ -16,6 +16,10 @@
 
 	let videoEl;
 	let canvasEl;
+	let ms = 0; // Material Score -> Lookuptable
+	let gw = 0; // Gewicht Score -> Lookuptable
+	let ts = 0; // Transport Score -> from how far away the product comes from
+	let goalNumber = 0; // Number of times an article has to be worn to be eco friendly
 	let loading = true;
 	let captured = false;
 	let error;
@@ -26,10 +30,6 @@
 		material = '',
 		origin = '',
 		img = '';
-		ms = 0; // Material Score -> Lookuptable
-		gs = 0; // Gewicht Score -> Lookuptable
-		ts = 0; // Transport Score -> from how far away the product comes from
-		goalNumber = 0; // Number of times an article has to be worn to be eco friendly
 	let accepted = false;
 	let type = selectedType;
 
