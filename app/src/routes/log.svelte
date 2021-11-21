@@ -14,6 +14,8 @@
 	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
 	import ClothListItem from '$lib/Cloth/ClothListItem.svelte';
+	import Checkbox from '$lib/Common/Checkbox.svelte';
+	import Button from '$lib/Common/Button.svelte';
 
 	let videoEl;
 	let canvasEl;
@@ -115,6 +117,9 @@
 	}
 
 	async function accept() {
+		if (disabled) return;
+		disabled = true;
+
 		// Calculate bounding box for cloth
 		let person = persons[0];
 		let images = [];
@@ -159,15 +164,18 @@
 		}
 		images.push(imageResponse.data.link);
 
+		disabled = false;
 		accepted = true;
 	}
 
 	function deny() {
 		captured = !captured;
 		accepted = false;
+		error = '';
 	}
 
 	function finish() {
+		if (disabled) return;
 		db.clothes.push({
 			id: db.clothes.slice(-1).id + 1 || 0,
 			name,
@@ -185,7 +193,8 @@
 
 	$: firstCloth = db.clothes[0];
 	$: secondCloth = db.clothes[1];
-
+	let selection = ['0', '1'];
+	$: console.log(selection);
 	function findBestFit() {
 		firstCloth = db.clothes[0];
 		secondCloth = db.clothes[1];
@@ -205,10 +214,46 @@
 			<h3>2 items recognized!</h3>
 			<p>Logging the following</p>
 			{#if db.clothes.length === 1}
-				<ClothListItem log={true} bind:cloth={firstCloth} />
+				<div class="clothGuessRow">
+					<div class="checkbox">
+						<Checkbox
+							id="0"
+							size="2rem"
+							bind:selection
+							on:change={(ev) => {
+								if (selection.includes('0')) {
+									selection = selection.filter((s) => s !== '0');
+								} else {
+									selection = [...selection, '0'];
+								}
+							}}
+						/>
+					</div>
+					<div class="item">
+						<ClothListItem log={true} bind:cloth={firstCloth} />
+					</div>
+				</div>
 			{/if}
 			{#if db.clothes.length === 2}
-				<ClothListItem log={true} bind:cloth={secondCloth} />
+				<div class="clothGuessRow">
+					<div class="checkbox">
+						<Checkbox
+							bind:selection
+							on:change={(ev) => {
+								if (selection.includes('1')) {
+									selection = selection.filter((s) => s !== '1');
+								} else {
+									selection = [...selection, '1'];
+								}
+							}}
+							id="1"
+							size="2rem"
+						/>
+					</div>
+					<div class="item">
+						<ClothListItem log={true} bind:cloth={secondCloth} />
+					</div>
+				</div>
 			{/if}
 		</div>
 		<div class="camera" class:hidden={accepted}>
@@ -230,8 +275,28 @@
 					<img on:click={accept} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
 					<img on:click={deny} src="/icons/cross.png" alt="deny" />
 				{:else if accepted}
-					<img on:click={finish} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
-					<img on:click={deny} src="/icons/cross.png" alt="deny" />
+					<div class="column">
+						<div class="buttonTop">
+							<Button
+								on:click={() => {
+									selection = ['0', '1'];
+								}}>Retake</Button
+							>
+							<Button
+								on:click={() => {
+									selection = [];
+								}}>Untick</Button
+							>
+						</div>
+						<div class="buttonBottom">
+							<img
+								on:click={finish}
+								src="/icons/tick{disabled ? '_disabled' : ''}.png"
+								alt="accept"
+							/>
+							<img on:click={deny} src="/icons/cross.png" alt="deny" />
+						</div>
+					</div>
 				{:else}
 					<img on:click={capture} src="/icons/cambutton.png" alt="Cam" />
 				{/if}
@@ -243,16 +308,42 @@
 {/if}
 
 <style>
+	.column {
+		display: flex;
+		flex-direction: column;
+	}
+	.buttonTop,
+	.buttonBottom {
+		display: flex;
+		justify-content: space-evenly;
+		flex-direction: row;
+	}
+	.buttonTop {
+		margin-bottom: 1rem;
+	}
+	.checkbox {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 20%;
+	}
+	.clothGuessRow {
+		width: 100%;
+		height: auto;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-evenly;
+		align-items: center;
+	}
+	.item {
+		width: 80%;
+	}
 	.inputs {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-	}
-	.acceptedImage {
-		width: 100%;
-		height: auto;
 	}
 	.logPage {
 		display: flex;
