@@ -11,12 +11,16 @@
 	import { uploadImageToImgur } from '$lib/imgur';
 	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
+	import { page } from '$app/stores';
+	const selectedType = $page.query.get('type');
 
 	let videoEl;
 	let canvasEl;
 	let loading = true;
 	let captured = false;
 	let error;
+	let persons = [];
+	let disabled = false;
 
 	onMount(async () => {
 		try {
@@ -39,10 +43,11 @@
 		canvasEl.height = videoEl.videoHeight;
 		canvasEl.getContext('2d').drawImage(videoEl, 0, 0);
 
+		disabled = true;
+
 		// Get the image data and upload it to Imgur
 		const data = canvasEl.toDataURL();
 		const imageResponse = await uploadImageToImgur(data);
-		console.log(imageResponse);
 		if (imageResponse.status !== 200) {
 			console.log('Unable to upload to Imgur', imageResponse);
 			error = imageResponse.data.error;
@@ -52,10 +57,9 @@
 		// Let azure find people in the imgur image
 		const imgURL = imageResponse.data.link;
 		const personResponse = await getPersonFromAzure(imgURL);
-		console.log(personResponse);
 
 		// Find all persons in the object detection
-		let persons = personResponse.objects
+		persons = personResponse.objects
 			.filter((person) => person.confidence > 0.5 && person.object === 'person')
 			.sort((a, b) => b.confidence - a.confidence);
 		console.log('Got persons:', persons);
@@ -74,15 +78,44 @@
 			ctx.rect(person.rectangle.x, person.rectangle.y, person.rectangle.w, person.rectangle.h);
 			ctx.stroke();
 		}
+
+		disabled = false;
 	}
 
 	async function accept() {
+		// Calculate bounding box for cloth
+		let person = persons[0];
+		let x, y, w, h;
+		if (selectedType === 't-shirt' || selectedType === 'pulli') {
+			x = person.rectangle.x;
+			y = person.rectangle.y + person.rectangle.h * 0.1;
+			w = person.rectangle.w;
+			h = person.rectangle.h - person.rectangle.h * 0.5;
+		} else if (selectedType === 'hose') {
+			x = person.rectangle.x;
+			y = person.rectangle.y + person.rectangle.h * 0.6;
+			w = person.rectangle.w;
+			h = person.rectangle.h - person.rectangle.h * 0.6;
+		}
+
+		// Crop the image
+		canvasEl.getContext('2d').drawImage(videoEl, x, y, w, h, 0, 0, canvasEl.width, canvasEl.height);
+
+		// Get the image data and upload it to Imgur
+		const data = canvasEl.toDataURL();
+		const imageResponse = await uploadImageToImgur(data);
+		if (imageResponse.status !== 200) {
+			console.log('Unable to upload to Imgur', imageResponse);
+			error = imageResponse.data.error;
+			return;
+		}
+
 		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1,
+			id: db.clothes.slice(-1).id + 1 || 0,
 			name: 'Test',
 			type: 'test',
 			color: 'asd',
-			img: res.data.link
+			img: imageResponse.data.link
 		});
 		writeObject('db', db);
 		goto('/wardrobe');
@@ -111,7 +144,7 @@
 		{/if}
 		<div class="buttonRow">
 			{#if captured}
-				<Button on:click={accept}>Accept</Button>
+				<Button {disabled} on:click={accept}>Accept</Button>
 				<Button on:click={deny}>Deny</Button>
 			{:else}
 				<Button on:click={capture}>Capture</Button>

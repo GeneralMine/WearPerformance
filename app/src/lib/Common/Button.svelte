@@ -5,15 +5,17 @@
 	export let url;
 	export let alternative = false;
 	export let round = false;
+	export let disabled = false;
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();
 </script>
 
-<a
+<button
 	href={url}
 	class:alternative
 	class:round
+	{disabled}
 	on:click={() => {
 		if (url) {
 			goto(url);
@@ -27,10 +29,10 @@
 	{:else}
 		<slot />
 	{/if}
-</a>
+</button>
 
 <style>
-	a {
+	button {
 		background-color: var(--primary-color);
 		color: white;
 		border: none;
@@ -46,7 +48,7 @@
 		border-radius: 0.5rem;
 	}
 
-	a:hover:not(:disabled) {
+	button:hover:not(:disabled) {
 		color: var(--primary-color);
 		background-color: var(--background-color);
 		-webkit-box-shadow: inset 0px 0px 0px 2px var(--primary-color);
@@ -54,7 +56,7 @@
 		box-shadow: inset 0px 0px 0px 2px var(--primary-color);
 	}
 
-	a:disabled {
+	button:disabled {
 		background-color: #444444;
 		cursor: default;
 	}
@@ -73,5 +75,6 @@
 		justify-content: center;
 		padding: 0;
 		font-size: 3rem;
+		margin: 2px;
 	}
 </style>

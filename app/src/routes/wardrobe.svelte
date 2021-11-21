@@ -5,6 +5,11 @@
 	import { writeObject, readObject } from '$lib/localstorage';
 
 	let db = readObject('db');
+
+	let openAddMenuOpen = false;
+	function openAddMenu() {
+		openAddMenuOpen = !openAddMenuOpen;
+	}
 </script>
 
 <svelte:head>
@@ -31,7 +36,28 @@
 		</ClothList>
 
 		<div class="footerBar">
-			<Button url="/add" round={true}>+</Button>
+			{#if openAddMenuOpen}
+				<div class="openAddMenu">
+					<div class="buttonLeft">
+						<Button url="/add?type=hose" round={true}
+							><img src="/icons/hose.png" alt="Add" class="plus smaller" /></Button
+						>
+					</div>
+					<div class="buttonMiddle">
+						<Button url="/add?type=t-shirt" round={true}
+							><img src="/icons/t-shirt.png" alt="Add" class="plus smaller" /></Button
+						>
+					</div>
+					<div class="buttonRight">
+						<Button url="/add?type=pulli" round={true}
+							><img src="/icons/pulli.png" alt="Add" class="plus smaller" /></Button
+						>
+					</div>
+				</div>
+			{/if}
+			<Button on:click={openAddMenu} round={true}
+				><img src="/icons/plus.png" alt="Add" class="plus" /></Button
+			>
 		</div>
 	</div>
 {/if}
@@ -66,5 +92,38 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+	}
+	.plus {
+		z-index: 5;
+		width: 3rem;
+		height: 3rem;
+	}
+	.buttonLeft {
+		position: relative;
+		left: -2.5rem;
+		top: -2.5rem;
+	}
+	.buttonMiddle {
+		position: relative;
+		top: -5rem;
+	}
+	.buttonRight {
+		position: relative;
+		left: 2.5rem;
+		top: -2.5rem;
+	}
+	.openAddMenu {
+		z-index: 1;
+		position: fixed;
+		bottom: 2%;
+		width: 90%;
+		height: 3rem;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.smaller {
+		width: 2rem;
+		height: 2rem;
 	}
 </style>
