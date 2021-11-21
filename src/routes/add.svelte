@@ -3,23 +3,13 @@
 
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
-
 	let db = readObject('db');
-
-	function add() {
-		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1,
-			name: 'Test',
-			type: 'test',
-			color: 'asd',
-			img: 'asd'
-		});
-		writeObject('db', db);
-		goto('/wardrobe');
-	}
 
 	/* Camera */
 	import { onMount } from 'svelte';
+	/* Imgur */
+	import { uploadImage } from '$lib/imgur';
+	import { goto } from '$app/navigation';
 
 	let videoEl;
 	let canvasEl;
@@ -49,9 +39,25 @@
 		canvasEl.getContext('2d').drawImage(videoEl, 0, 0);
 	}
 
-	function accept() {
+	async function accept() {
 		const data = canvasEl.toDataURL('image/png');
 		console.log(data);
+		const res = await uploadImage(data);
+		console.log(res);
+		if (res.status === 200) {
+			db.clothes.push({
+				id: db.clothes.slice(-1).id + 1,
+				name: 'Test',
+				type: 'test',
+				color: 'asd',
+				img: res.data.link
+			});
+			writeObject('db', db);
+			goto('/wardrobe');
+		} else {
+			console.log('Unable to upload to Imgur');
+			error = res.data.error;
+		}
 	}
 
 	function deny() {
@@ -63,26 +69,27 @@
 	<div class="headerBar">Add new clothing</div>
 
 	<div class="camera">
+		{#if loading}
+			loading...
+		{/if}
 		<!-- svelte-ignore a11y-media-has-caption -->
 		<video class:hidden={captured} bind:this={videoEl} />
 		<canvas class:hidden={!captured} bind:this={canvasEl} />
 	</div>
 
-	<div class="buttonRow">
-		{#if captured}
-			<Button on:click={accept}>Accept</Button>
-			<Button on:click={deny}>Deny</Button>
-		{:else}
-			<Button on:click={capture}>Capture</Button>
+	<div class="footer">
+		{#if error}
+			<span class="error">{JSON.stringify(error, null, 4)}</span>
 		{/if}
+		<div class="buttonRow">
+			{#if captured}
+				<Button on:click={accept}>Accept</Button>
+				<Button on:click={deny}>Deny</Button>
+			{:else}
+				<Button on:click={capture}>Capture</Button>
+			{/if}
+		</div>
 	</div>
-
-	{#if loading}
-		loading...
-	{/if}
-	{#if error}
-		<code>{JSON.stringify(error, null, 4)}</code>
-	{/if}
 </div>
 
 <style>
@@ -117,11 +124,22 @@
 	.hidden {
 		display: none;
 	}
+	.footer {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		margin-top: 1rem;
+	}
 	.buttonRow {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
-		margin-top: 1rem;
+	}
+	.error {
+		color: red;
+		font-weight: bold;
+		text-align: center;
 	}
 </style>
