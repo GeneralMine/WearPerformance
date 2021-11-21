@@ -42,6 +42,9 @@ async function startup() {
 	app.options('*', cors());
 
 	// Routes
+	app.get('/', (req, res) => {
+		res.send('Go away!');
+	});
 	app.post('/', (req, res) => {
 		res.send('Hello World!');
 	});
