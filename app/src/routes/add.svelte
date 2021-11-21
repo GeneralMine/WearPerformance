@@ -74,13 +74,31 @@
 		for (let person of persons) {
 			ctx.beginPath();
 			ctx.lineWidth = '3';
-			ctx.strokeStyle = 'red';
+			ctx.strokeStyle = 'green';
 			ctx.rect(
 				person.rectangle.x - 3,
 				person.rectangle.y - 3,
 				person.rectangle.w + 6,
 				person.rectangle.h + 6
 			);
+			ctx.stroke();
+
+			ctx.beginPath();
+			ctx.lineWidth = '3';
+			ctx.strokeStyle = 'red';
+			let x, y, w, h;
+			if (selectedType === 't-shirt' || selectedType === 'pulli') {
+				x = person.rectangle.x;
+				y = person.rectangle.y + person.rectangle.h * 0.1;
+				w = person.rectangle.w;
+				h = person.rectangle.h * 0.5;
+			} else if (selectedType === 'hose') {
+				x = person.rectangle.x;
+				y = person.rectangle.y + person.rectangle.h * 0.5;
+				w = person.rectangle.w;
+				h = person.rectangle.h * 0.5;
+			}
+			ctx.rect(x - 3, y - 3, w + 6, h + 6);
 			ctx.stroke();
 		}
 
