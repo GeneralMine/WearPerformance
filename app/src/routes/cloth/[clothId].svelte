@@ -25,7 +25,7 @@
 			<h1>{cloth.name}</h1>
 			<div id="wrapper">
 				<div id="first">Number of times Worn: {cloth.wornCounter}</div>
-				<div id="second">Added: {cloth.daysAdded} days ago</div>
+				<div id="second">Added: {cloth.daysAdded}</div>
 			</div>
 		</div>
 		<div class="stats">

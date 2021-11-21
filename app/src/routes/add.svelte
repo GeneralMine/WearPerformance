@@ -236,7 +236,6 @@ import { get_spread_update } from 'svelte/internal';
 			<option value="tshirt">T-Shirt</option>
 			<option value="pulli">Pulli</option>
 		</select>
-		<input required placeholder="Color" bind:value={color} />
 		<input required placeholder="Name" bind:value={name} />
 		<input required placeholder="Origin" bind:value={origin} />
 		<select required bind:value={material}>
