@@ -75,7 +75,12 @@
 			ctx.beginPath();
 			ctx.lineWidth = '3';
 			ctx.strokeStyle = 'red';
-			ctx.rect(person.rectangle.x, person.rectangle.y, person.rectangle.w, person.rectangle.h);
+			ctx.rect(
+				person.rectangle.x - 3,
+				person.rectangle.y - 3,
+				person.rectangle.w + 6,
+				person.rectangle.h + 6
+			);
 			ctx.stroke();
 		}
 
