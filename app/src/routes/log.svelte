@@ -1,3 +1,7 @@
+<script context="module">
+	export const ssr = false;
+</script>
+
 <script>
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
@@ -9,6 +13,7 @@
 	import { uploadImageToImgur } from '$lib/imgur';
 	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
+	import ClothListItem from '$lib/Cloth/ClothListItem.svelte';
 
 	let videoEl;
 	let canvasEl;
@@ -177,45 +182,65 @@
 		writeObject('db', db);
 		goto('/wardrobe');
 	}
+
+	$: firstCloth = db.clothes[0];
+	$: secondCloth = db.clothes[1];
+
+	function findBestFit() {
+		firstCloth = db.clothes[0];
+		secondCloth = db.clothes[1];
+	}
 </script>
 
 <svelte:head>
 	<title>Log Outfit | WearPerformance</title>
 </svelte:head>
 
-<div class="logPage">
-	<div class="headerBar">Add new Item</div>
+{#if db && db.clothes && db.clothes.length > 0}
+	<!-- content here -->
+	<div class="logPage">
+		<div class="headerBar">Add new Item</div>
 
-	<div class="inputs" class:hidden={!accepted}>
-		<img class="acceptedImage" src="" alt="Item" />
-	</div>
-	<div class="camera" class:hidden={accepted}>
-		{#if loading}
-			loading...
-		{/if}
-		<!-- svelte-ignore a11y-media-has-caption -->
-		<video class:hidden={captured} bind:this={videoEl} />
-		<canvas class:hidden={!captured} bind:this={canvasEl} />
-		<canvas class:hidden={true} bind:this={canvasEl2} />
-	</div>
-
-	<div class="footer">
-		{#if error}
-			<span class="error">{JSON.stringify(error, null, 4)}</span>
-		{/if}
-		<div class="buttonRow">
-			{#if captured && !accepted}
-				<img on:click={accept} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
-				<img on:click={deny} src="/icons/cross.png" alt="deny" />
-			{:else if accepted}
-				<img on:click={finish} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
-				<img on:click={deny} src="/icons/cross.png" alt="deny" />
-			{:else}
-				<img on:click={capture} src="/icons/cambutton.png" alt="Cam" />
+		<div class="inputs" class:hidden={!accepted}>
+			<h3>2 items recognized!</h3>
+			<p>Logging the following</p>
+			{#if db.clothes.length === 1}
+				<ClothListItem log={true} bind:cloth={firstCloth} />
+			{/if}
+			{#if db.clothes.length === 2}
+				<ClothListItem log={true} bind:cloth={secondCloth} />
 			{/if}
 		</div>
+		<div class="camera" class:hidden={accepted}>
+			{#if loading}
+				loading...
+			{/if}
+			<!-- svelte-ignore a11y-media-has-caption -->
+			<video class:hidden={captured} bind:this={videoEl} />
+			<canvas class:hidden={!captured} bind:this={canvasEl} />
+			<canvas class:hidden={true} bind:this={canvasEl2} />
+		</div>
+
+		<div class="footer">
+			{#if error}
+				<span class="error">{JSON.stringify(error, null, 4)}</span>
+			{/if}
+			<div class="buttonRow">
+				{#if captured && !accepted}
+					<img on:click={accept} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+					<img on:click={deny} src="/icons/cross.png" alt="deny" />
+				{:else if accepted}
+					<img on:click={finish} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+					<img on:click={deny} src="/icons/cross.png" alt="deny" />
+				{:else}
+					<img on:click={capture} src="/icons/cambutton.png" alt="Cam" />
+				{/if}
+			</div>
+		</div>
 	</div>
-</div>
+{:else}
+	Add items to your wardrobe to log them here!
+{/if}
 
 <style>
 	.inputs {

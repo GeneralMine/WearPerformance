@@ -9,8 +9,7 @@
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
 	let db = readObject('db');
-	import Log from '../log.svelte';
-import { destroy_block } from 'svelte/internal';
+	import { destroy_block } from 'svelte/internal';
 	let cloth = db.clothes[$page.params.clothId];
 	//$: cloth = db ? db.clothes.filter((el) => el.id === $page.params.clothId) : null;
 </script>
@@ -23,30 +22,28 @@ import { destroy_block } from 'svelte/internal';
 	<div class="clothPage">
 		<div class="clothListItemImg">
 			<img src={cloth.img} alt="" />
-			<h1> {cloth.name} </h1>
+			<h1>{cloth.name}</h1>
 			<div id="wrapper">
 				<div id="first">Number of times Worn: {cloth.wornCounter}</div>
 				<div id="second">Added: {cloth.daysAdded} days ago</div>
 			</div>
 		</div>
 		<div class="stats">
-		<h3>Your item footprint</h3>
-		<ProgressBar min="0" max="100" value="50" />
-		<br>
-		<p>Material: {cloth.material}</p>
-		<ProgressBar min="0" max="100" value="50" />
-		<br>
-		<p>Origin: {cloth.origin}</p>
-		<ProgressBar min="0" max="100" value="50" />
+			<h3>Your item footprint</h3>
+			<ProgressBar min="0" max="100" value="50" />
+			<br />
+			<p>Material: {cloth.material}</p>
+			<ProgressBar min="0" max="100" value="50" />
+			<br />
+			<p>Origin: {cloth.origin}</p>
+			<ProgressBar min="0" max="100" value="50" />
 		</div>
-		<br>
+		<br />
 		<div class="buttons">
 			<Button color="red" url="/log">Delete</Button>
 			<Button url="/wardrobe">Back</Button>
 		</div>
 	</div>
-
-	
 {/if}
 
 <style>
@@ -59,20 +56,20 @@ import { destroy_block } from 'svelte/internal';
 
 	.clothListItemImg {
 		display: block;
-  		margin: auto;
+		margin: auto;
 		padding: 0.3rem;
 		text-align: center;
 	}
 
 	img {
-		width:100%;
+		width: 100%;
 		height: auto;
 		border-radius: 20px;
 	}
 
 	.stats {
 		display: block;
-  		margin: auto;
+		margin: auto;
 		padding: 0.3rem;
 		text-align: center;
 	}
@@ -86,14 +83,14 @@ import { destroy_block } from 'svelte/internal';
 
 	#wrapper {
 		overflow: hidden;
-    	width: 100%;
+		width: 100%;
 	}
 	#first {
-		float:left;
-	    width: 50%;
+		float: left;
+		width: 50%;
 	}
 	#second {
-		float:left;
+		float: left;
 		width: 50%;
 	}
 </style>
