@@ -7,13 +7,13 @@
 
 <div class="clothListItemContainer clickArea" on:click={() => goto(`/cloth/${cloth.id}`)}>
 	<div class="clothListItemImg">
-		<img src={cloth.img} alt="" />
+		<img src={cloth.img} alt=""/>
 	</div>
 	<div class="clothListItemInfo">
 		<div class="clothListItemInfoTop">{cloth.name}</div>
 		<div class="clothListItemInfoMiddle">
-			<div class="clothListItemInfoMiddleLeft">Stat 1: x</div>
-			<div class="clothListItemInfoMiddleRight">Stat 2: y</div>
+			<div class="clothListItemInfoMiddleLeft">Worn: {cloth.wornCounter} times</div>
+			<div class="clothListItemInfoMiddleRight">{cloth.dateAdded}</div>
 		</div>
 		<div class="clothListItemInfoBottom">
 			<ProgressBar small={true} min="0" max="100" value={Math.random() * 100} />

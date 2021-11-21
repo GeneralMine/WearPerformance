@@ -12,6 +12,7 @@
 	import { getPersonFromAzure } from '$lib/azure';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
+import { get_spread_update } from 'svelte/internal';
 	const selectedType = $page.query.get('type');
 
 	let videoEl;
@@ -31,7 +32,11 @@
 		origin = '',
 		img = '';
 	let accepted = false;
+	let dateAdded = "";
 	let type = selectedType;
+
+	var today = new Date();
+	dateAdded = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
 	onMount(async () => {
 		try {
@@ -167,7 +172,15 @@
 			alert('Please fill in all the fields');
 			return;
 		}
-
+		/*
+		const lookupCSV = require('lookup-csv');
+ 
+		// Create a lookup table using lookup column name to use from the csv data
+		const lookupTable = lookupCSV('../static/distanceToCountry.csv', 'Distance');
+ 
+		// Get rows matching lookup value
+		ts = lookupTable.get(origin) * 0.0005;
+		*/
 		switch (material) {
 			case "Kunstoff":
 				ms = 5,5;
@@ -201,7 +214,8 @@
 			gw,
 			ms,
 			ts,
-			goalNumber
+			goalNumber,
+			dateAdded
 		});
 		writeObject('db', db);
 		goto('/wardrobe');
