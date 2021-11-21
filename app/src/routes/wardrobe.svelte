@@ -55,9 +55,23 @@
 					</div>
 				</div>
 			{/if}
+			
+			<!--
+			<div class="buttons">
+				<div id="first">Home</div>
+				<div id="bar">|</div>
+				<div id="second" on:click={openAddMenu}>Add Item</div>
+				<img src="/icons/plus.png" alt="Add" class="plus" />
+			</div>
+			</div>-->
+			<div class="center">
 			<Button on:click={openAddMenu} round={true}
 				><img src="/icons/plus.png" alt="Add" class="plus" /></Button
 			>
+			</div>
+			<div class="buttons">
+				<Button url="/">Home</Button>
+			</div>
 		</div>
 	</div>
 {/if}
@@ -86,10 +100,10 @@
 	}
 	.footerBar {
 		position: fixed;
-		bottom: 2%;
+		bottom: 8%;
 		width: 90%;
 		height: 3rem;
-		display: flex;
+		/*display: flex;*/
 		justify-content: center;
 		align-items: center;
 	}
@@ -97,21 +111,45 @@
 		z-index: 5;
 		width: 3rem;
 		height: 3rem;
+		text-align: center;
+		margin: auto;
 	}
 	.buttonLeft {
 		position: relative;
 		left: -2.5rem;
-		top: -2.5rem;
+		top: -7.5rem;
 	}
 	.buttonMiddle {
 		position: relative;
-		top: -5rem;
+		top: -10rem;
 	}
 	.buttonRight {
 		position: relative;
 		left: 2.5rem;
-		top: -2.5rem;
+		top: -7.5rem;
 	}
+
+	.center{
+		color: white;
+    	width: 10%;
+		height: 100%;
+		margin:auto;
+		text-align: center;
+		padding-bottom: 2%;
+	}
+
+	.buttons {
+		
+		background-color: var(--primary-color);
+		color: white;
+    	width: 50%;
+		height: 100%;
+		margin: auto;
+		text-align: center;
+		border-radius: 20px;
+	}
+
+	
 	.openAddMenu {
 		z-index: 1;
 		position: fixed;
@@ -126,4 +164,34 @@
 		width: 2rem;
 		height: 2rem;
 	}
+
+	#first {
+		float:left;
+	    width: 100%;
+		height: 100%;
+		top: 50%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	#second {
+		float:left;
+		width: 49%;
+		margin: auto;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	#bar {
+		float:left;
+		width: 2%;
+		margin: auto;
+		height: 100%;
+		background-color: white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
 </style>

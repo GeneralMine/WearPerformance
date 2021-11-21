@@ -25,7 +25,7 @@
 			<h1>{cloth.name}</h1>
 			<div id="wrapper">
 				<div id="first">Number of times Worn: {cloth.wornCounter}</div>
-				<div id="second">Added: {cloth.daysAdded} days ago</div>
+				<div id="second">Added: {cloth.daysAdded}</div>
 			</div>
 		</div>
 		<div class="stats">
@@ -40,8 +40,9 @@
 		</div>
 		<br />
 		<div class="buttons">
-			<Button color="red" url="/log">Delete</Button>
-			<Button url="/wardrobe">Back</Button>
+			//TODO Delete Item functionality
+			<Button color="red" url="/">Delete</Button>
+			<Button color="grey" url="/wardrobe">Back</Button>
 		</div>
 	</div>
 {/if}
@@ -78,7 +79,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		color: blue;
 	}
 
 	#wrapper {
