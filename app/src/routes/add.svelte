@@ -99,7 +99,9 @@
 		}
 
 		// Crop the image
-		canvasEl.getContext('2d').drawImage(videoEl, x, y, w, h, 0, 0, canvasEl.width, canvasEl.height);
+		canvasEl
+			.getContext('2d')
+			.drawImage(canvasEl, x, y, w, h, 0, 0, canvasEl.width, canvasEl.height);
 
 		// Get the image data and upload it to Imgur
 		const data = canvasEl.toDataURL();
