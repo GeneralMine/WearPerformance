@@ -1,9 +1,6 @@
 # Internal
 .internal
 
-# Node
-package-lock.json
-
 # Env
 .env
 
