@@ -399,6 +399,13 @@
 		width: 100%;
 		height: auto;
 	}
+
+	img {
+		width: 100%;
+		height: auto;
+		border-radius: 20px;
+	}
+
 	canvas {
 		display: flex;
 		top: 0%;
