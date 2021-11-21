@@ -1,0 +1,2 @@
+GET https://api.imgur.com/3/credits
+Authorization: Bearer 631da1d44ba239fc742bf3bbea1db0630cf59d1d

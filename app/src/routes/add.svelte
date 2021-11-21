@@ -151,8 +151,12 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Add new Item | WearPerformance</title>
+</svelte:head>
+
 <div class="addPage">
-	<div class="headerBar">Add new clothing</div>
+	<div class="headerBar">Add new Item</div>
 
 	<div class="camera">
 		{#if loading}
