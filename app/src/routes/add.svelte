@@ -164,6 +164,7 @@
 			material,
 			origin,
 			score: 0,
+			wornCounter: 0,
 			img
 		});
 		writeObject('db', db);

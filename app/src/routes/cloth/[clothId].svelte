@@ -1,3 +1,7 @@
+<script context="module">
+	export const ssr = false;
+</script>
+
 <script>
 	import ProgressBar from '$lib/Common/ProgressBar.svelte';
 	import { page } from '$app/stores';
@@ -5,25 +9,26 @@
 	import { readObject, writeObject } from '$lib/localstorage';
 	let db = readObject('db');
 
-	let cloth = db.clothes.filter((el) => el.id === $page.params.clothId)[0];
+	$: cloth = db ? db.clothes.filter((el) => el.id === $page.params.clothId) : null;
 </script>
 
 <svelte:head>
 	<title>Item Info | WearPerformance</title>
 </svelte:head>
 
-<div class="clothPage">
-	
-	<div class="clothListItemImg">
-		<img src={cloth.img} alt=""/>
-	</div>
-	<ProgressBar min="0" max="100" value="50"/>
-	<p>Material: {cloth.material}</p>
-	<p>Origin: {cloth.origin}</p>
-	<p>Number of times Worn: {cloth.nbWorn}</p>
+{#if db}
+	<div class="clothPage">
+		<div class="clothListItemImg">
+			<img src={cloth.img} alt="" />
+		</div>
+		<ProgressBar min="0" max="100" value="50" />
+		<p>Material: {cloth.material}</p>
+		<p>Origin: {cloth.origin}</p>
+		<p>Number of times Worn: {cloth.wornCounter}</p>
 
-	<div />
-</div>
+		<div />
+	</div>
+{/if}
 
 <style>
 	.clothPage {
