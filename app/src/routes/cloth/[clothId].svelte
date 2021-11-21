@@ -40,8 +40,9 @@
 		</div>
 		<br />
 		<div class="buttons">
-			<Button color="red" url="/log">Delete</Button>
-			<Button url="/wardrobe">Back</Button>
+			//TODO Delete Item functionality
+			<Button color="red" url="/">Delete</Button>
+			<Button color="grey" url="/wardrobe">Back</Button>
 		</div>
 	</div>
 {/if}
@@ -78,7 +79,6 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: space-around;
-		color: blue;
 	}
 
 	#wrapper {
