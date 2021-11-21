@@ -44,8 +44,8 @@
 						>
 					</div>
 					<div class="buttonMiddle">
-						<Button url="/add?type=t-shirt" round={true}
-							><img src="/icons/t-shirt.png" alt="Add" class="plus smaller" /></Button
+						<Button url="/add?type=tshirt" round={true}
+							><img src="/icons/tshirt.png" alt="Add" class="plus smaller" /></Button
 						>
 					</div>
 					<div class="buttonRight">

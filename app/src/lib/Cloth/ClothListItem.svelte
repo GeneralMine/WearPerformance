@@ -10,7 +10,7 @@
 		<img src={cloth.img} alt="" />
 	</div>
 	<div class="clothListItemInfo">
-		<div class="clothListItemInfoTop">Brown T.H. Hoodie</div>
+		<div class="clothListItemInfoTop">{cloth.name}</div>
 		<div class="clothListItemInfoMiddle">
 			<div class="clothListItemInfoMiddleLeft">Stat 1: x</div>
 			<div class="clothListItemInfoMiddleRight">Stat 2: y</div>

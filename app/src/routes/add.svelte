@@ -16,11 +16,22 @@
 
 	let videoEl;
 	let canvasEl;
+	let ms = 0; // Material Score -> Lookuptable
+	let gw = 0; // Gewicht Score -> Lookuptable
+	let ts = 0; // Transport Score -> from how far away the product comes from
+	let goalNumber = 0; // Number of times an article has to be worn to be eco friendly
 	let loading = true;
 	let captured = false;
 	let error;
 	let persons = [];
 	let disabled = false;
+	let name = '',	
+		color = '',
+		material = '',
+		origin = '',
+		img = '';
+	let accepted = false;
+	let type = selectedType;
 
 	onMount(async () => {
 		try {
@@ -87,7 +98,7 @@
 			ctx.lineWidth = '3';
 			ctx.strokeStyle = 'red';
 			let x, y, w, h;
-			if (selectedType === 't-shirt' || selectedType === 'pulli') {
+			if (selectedType === 'tshirt' || selectedType === 'pulli') {
 				x = person.rectangle.x;
 				y = person.rectangle.y + person.rectangle.h * 0.1;
 				w = person.rectangle.w;
@@ -109,12 +120,19 @@
 		// Calculate bounding box for cloth
 		let person = persons[0];
 		let x, y, w, h;
-		if (selectedType === 't-shirt' || selectedType === 'pulli') {
+		if (selectedType === 'tshirt' || selectedType === 'pulli') {
+			// Lookup table part (temporary if statement construct)
+			if (selectedType === 'tshirt') {
+				gw = 2;
+			} else {
+				gw = 5;
+			}
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.1;
 			w = person.rectangle.w;
 			h = person.rectangle.h * 0.5;
 		} else if (selectedType === 'hose') {
+			gw = 4;
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.5;
 			w = person.rectangle.w;
@@ -134,23 +152,59 @@
 			error = imageResponse.data.error;
 			return;
 		}
+		img = imageResponse.data.link;
 
-		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1 || 0,
-			name: 'Test',
-			type: 'test',
-			color: 'asd',
-			material: 'asd',
-			origin: 'asd',
-			score: 0,
-			img: imageResponse.data.link
-		});
-		writeObject('db', db);
-		goto('/wardrobe');
+		accepted = true;
 	}
 
 	function deny() {
 		captured = !captured;
+		accepted = false;
+	}
+
+	function finish() {
+		if (name === '' || color === '' || material === '' || origin === '' || img === '') {
+			alert('Please fill in all the fields');
+			return;
+		}
+
+		switch (material) {
+			case "Kunstoff":
+				ms = 5,5;
+				break;
+			case "Pelz":
+				ms = 7;
+				break;
+			case "Leder":
+				ms = 7;
+				break;
+			case "Baumwolle":
+				ms = 4,5;
+				break;
+			case "Bio-Baumwolle":
+				ms = 1;
+				break;
+		}
+
+		goalNumber = (ms*gw + ts) * 3;
+			
+		db.clothes.push({
+			id: db.clothes.length,
+			name,
+			type,
+			color,
+			material,
+			origin,
+			score: 0,
+			wornCounter: 0,
+			img,
+			gw,
+			ms,
+			ts,
+			goalNumber
+		});
+		writeObject('db', db);
+		goto('/wardrobe');
 	}
 </script>
 
@@ -161,7 +215,25 @@
 <div class="addPage">
 	<div class="headerBar">Add new Item</div>
 
-	<div class="camera">
+	<div class="inputs" class:hidden={!accepted}>
+		<img class="acceptedImage" src={img} alt="Item" />
+		<select required bind:value={type}>
+			<option value="hose">Hose</option>
+			<option value="tshirt">T-Shirt</option>
+			<option value="pulli">Pulli</option>
+		</select>
+		<input required placeholder="Color" bind:value={color} />
+		<input required placeholder="Name" bind:value={name} />
+		<input required placeholder="Origin" bind:value={origin} />
+		<select required bind:value={material}>
+			<option value="kunststoff">Kunststoff</option>
+			<option value="leder">Leder</option>
+			<option value="Pelz">Pelz</option>
+			<option value="Baumwolle">Baumwolle</option>
+			<option value="bioBaumwolle">Bio Baumwolle</option>
+		</select>
+	</div>
+	<div class="camera" class:hidden={accepted}>
 		{#if loading}
 			loading...
 		{/if}
@@ -175,17 +247,31 @@
 			<span class="error">{JSON.stringify(error, null, 4)}</span>
 		{/if}
 		<div class="buttonRow">
-			{#if captured}
-				<Button {disabled} on:click={accept}>Accept</Button>
-				<Button on:click={deny}>Deny</Button>
+			{#if captured && !accepted}
+				<img on:click={accept} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+				<img on:click={deny} src="/icons/cross.png" alt="deny" />
+			{:else if accepted}
+				<img on:click={finish} src="/icons/tick{disabled ? '_disabled' : ''}.png" alt="accept" />
+				<img on:click={deny} src="/icons/cross.png" alt="deny" />
 			{:else}
-				<Button on:click={capture}>Capture</Button>
+				<img on:click={capture} src="/icons/cambutton.png" alt="Cam" />
 			{/if}
 		</div>
 	</div>
 </div>
 
 <style>
+	.inputs {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+	}
+	.acceptedImage {
+		width: 100%;
+		height: auto;
+	}
 	.addPage {
 		display: flex;
 		flex-direction: column;
@@ -234,5 +320,11 @@
 		color: red;
 		font-weight: bold;
 		text-align: center;
+	}
+	img {
+		width: 4rem;
+		height: 4rem;
+		padding-left: 4rem;
+		padding-right: 4rem;
 	}
 </style>

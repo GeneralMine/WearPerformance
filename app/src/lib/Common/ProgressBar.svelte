@@ -14,7 +14,9 @@
 </script>
 
 <div class="progressbar">
-	<div class="progressbarInner" class:small style="width: {progress}%;" />
+	<div class="goalValue"/>
+		<div class="progressbarInner" class:small style="width: {progress}%;" />
+
 </div>
 
 <style>
@@ -32,6 +34,17 @@
 		height: 20px;
 		border-radius: 10px;
 	}
+
+	/*
+	.goalValue {
+		border-radius:11px solid black;
+		border-bottom-left-radius: 13px;
+		border-top-left-radius: 13px;
+		padding: 10px;
+		position: absolute;
+		width: 20 px;
+	}
+	*/
 
 	.small {
 		height: 10px;
