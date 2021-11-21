@@ -90,12 +90,12 @@
 			x = person.rectangle.x;
 			y = person.rectangle.y + person.rectangle.h * 0.1;
 			w = person.rectangle.w;
-			h = person.rectangle.h - person.rectangle.h * 0.5;
+			h = person.rectangle.h * 0.5;
 		} else if (selectedType === 'hose') {
 			x = person.rectangle.x;
-			y = person.rectangle.y + person.rectangle.h * 0.6;
+			y = person.rectangle.y + person.rectangle.h * 0.5;
 			w = person.rectangle.w;
-			h = person.rectangle.h - person.rectangle.h * 0.6;
+			h = person.rectangle.h * 0.5;
 		}
 
 		// Crop the image
