@@ -2,11 +2,22 @@ version: "3"
 
 services:
     app:
-        container_name: wearperformance
+        container_name: wearperformance-app
         restart: always
-        image: 127.0.0.1:5000/wearperformance
-        build: .
-        environment: 
-            - "PORT=${PORT}"
-        ports: 
-            - "${PORT}:${PORT}"
+        image: 127.0.0.1:5000/wearperformance-app
+        build: ./app
+        environment:
+            - "PORT=${APP_PORT}"
+        ports:
+            - "${APP_PORT}:${APP_PORT}"
+    api:
+        container_name: wearperformance-api
+        restart: always
+        image: 127.0.0.1:5000/wearperformance-api
+        build: ./api
+        environment:
+            - "PORT=${API_PORT}"
+            - "IMGUR_CLIENT_ID=${IMGUR_CLIENT_ID}"
+            - "IMGUR_CLIENT_SECRET=${IMGUR_CLIENT_SECRET}"
+        ports:
+            - "${API_PORT}:${API_PORT}"

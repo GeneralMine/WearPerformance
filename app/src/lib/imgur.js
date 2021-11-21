@@ -1,17 +1,18 @@
-const imgurEndpoint = 'https://api.imgur.com/3';
+const imgurEndpoint = 'https://api.imgur.com/3/image';
 
 export async function uploadImage(image) {
 	const formData = new FormData();
 	formData.append('image', image);
-	formData.append('type', 'base64');
 
-	const response = await fetch(imgurEndpoint, {
+	let options = {
 		method: 'POST',
 		headers: {
-			'Content-Type': 'multipart/form-data',
 			Authorization: 'Client-ID a115d420f5503cc'
 		},
 		body: formData
-	});
+	};
+	console.log(options);
+	console.log('formData', formData);
+	const response = await fetch(imgurEndpoint, options);
 	return response.json();
 }

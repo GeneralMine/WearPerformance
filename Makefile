@@ -14,7 +14,8 @@ update:
 	git pull
 
 configure_nginx: 
-	sudo ln -f wearperformance.raiser.dev.conf ../proxy/sites/
+	sudo ln -f app/wearperformance.raiser.dev.conf ../proxy/sites/
+	sudo ln -f api/wearperformance-api.raiser.dev.conf ../proxy/sites/
 
 logs:
 	while true; do docker-compose logs -f; sleep 2; done

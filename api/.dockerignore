@@ -1,0 +1,8 @@
+node_modules
+
+aurasky-api.raiser.dev.conf
+aurasky-db.raiser.dev.conf
+.env
+
+LICENSE
+Dockerfile

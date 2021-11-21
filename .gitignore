@@ -1,6 +1,14 @@
-.DS_Store
-node_modules
-/build
-/.svelte-kit
-/package
+# Internal
+.internal
+
+# Node
+package-lock.json
+
+# Env
 .env
+
+# Database
+db
+db.zip
+migrations
+cache
