@@ -17,7 +17,7 @@
 			<div class="clothListItemInfoMiddleRight">Added: {cloth.dateAdded}</div>
 		</div>
 		<div class="clothListItemInfoBottom">
-			<ProgressBar small={true} min="0" max="100" value={Math.random() * 100} />
+			<ProgressBar small={true} min="0" max="100" value={cloth.score} />
 		</div>
 	</div>
 	<img src="/icons/loop-arrow.png" class="loopArrow" class:log alt="" />
@@ -60,7 +60,7 @@
 	}
 	.clothListItemInfo {
 		height: 100%;
-		width: 60%;
+		width: 70%;
 		display: flex;
 		flex-direction: column;
 	}
@@ -88,5 +88,9 @@
 		width: 100%;
 		height: auto;
 		border-radius: 10px;
+	}
+
+	.clothListItemInfoMiddleLeft, .clothListItemInfoMiddleRight {
+		font-size: smaller;
 	}
 </style>

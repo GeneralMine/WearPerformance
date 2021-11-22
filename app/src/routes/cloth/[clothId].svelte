@@ -9,9 +9,16 @@
 	/* Database */
 	import { readObject, writeObject } from '$lib/localstorage';
 	let db = readObject('db');
-	import { destroy_block } from 'svelte/internal';
+	import { goto } from '$app/navigation';
+	import { origins, materials } from '$lib/sustainability';
 	let cloth = db.clothes[$page.params.clothId];
 	//$: cloth = db ? db.clothes.filter((el) => el.id === $page.params.clothId) : null;
+	function remove() {
+		db.clothes = db.clothes.filter((el) => el.id !== cloth.id);
+		writeObject('db', db);
+		console.log(db);
+		goto('/wardrobe');
+	}
 </script>
 
 <svelte:head>
@@ -25,7 +32,7 @@
 			<h1>{cloth.name}</h1>
 			<div id="wrapper">
 				<div id="first">Number of times Worn: {cloth.wornCounter}</div>
-				<div id="second">Added: {cloth.daysAdded}</div>
+				<div id="second">Added: {cloth.dateAdded}</div>
 			</div>
 		</div>
 		<div class="stats">
@@ -33,15 +40,14 @@
 			<ProgressBar min="0" max="100" value="50" />
 			<br />
 			<p>Material: {cloth.material}</p>
-			<ProgressBar min="0" max="100" value="50" />
+			<ProgressBar min="0" max="10" value={materials[cloth.material]} />
 			<br />
 			<p>Origin: {cloth.origin}</p>
-			<ProgressBar min="0" max="100" value="50" />
+			<ProgressBar min="0" max="100" value={origins[cloth.origin] / 100} />
 		</div>
 		<br />
 		<div class="buttons">
-			//TODO Delete Item functionality
-			<Button color="red" url="/">Delete</Button>
+			<Button on:click={remove} color="red">Delete</Button>
 			<Button color="grey" url="/wardrobe">Back</Button>
 		</div>
 	</div>

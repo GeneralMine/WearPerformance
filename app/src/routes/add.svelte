@@ -169,7 +169,7 @@
 	}
 
 	function finish() {
-		if (name === '' || color === '' || material === '' || origin === '' || img === '') {
+		if (name === '' || material === '' || origin === '' || img === '') {
 			alert('Please fill in all the fields');
 			return;
 		}
@@ -209,7 +209,7 @@
 			color,
 			material,
 			origin,
-			score: 0,
+			score: Math.ceil(Math.random() * 100),
 			wornCounter: 0,
 			img,
 			gw,
@@ -327,7 +327,7 @@
 		<input required placeholder="Name" bind:value={name} />
 		<select required bind:value={origin}>
 			{#each Object.keys(originsList) as key}
-				<option value={key}>{key}</option>
+				<option value={key}>{key[0].toUpperCase() + key.substring(1)}</option>
 			{/each}
 		</select>
 		<select required bind:value={material}>

@@ -176,18 +176,11 @@
 
 	function finish() {
 		if (disabled) return;
-		db.clothes.push({
-			id: db.clothes.slice(-1).id + 1 || 0,
-			name,
-			type,
-			color,
-			material,
-			origin,
-			score: 0,
-			wornCounter: 0,
-			img
-		});
+
+		db.clothes[firstCloth.id].wornCounter += 1;
+		db.clothes[secondCloth.id].wornCounter += 1;
 		writeObject('db', db);
+
 		goto('/wardrobe');
 	}
 
@@ -208,12 +201,12 @@
 {#if db && db.clothes && db.clothes.length > 0}
 	<!-- content here -->
 	<div class="logPage">
-		<div class="headerBar">Add new Item</div>
+		<div class="headerBar">Log your day</div>
 
 		<div class="inputs" class:hidden={!accepted}>
 			<h3>2 items recognized!</h3>
 			<p>Logging the following</p>
-			{#if db.clothes.length === 1}
+			{#if db.clothes.length >= 1}
 				<div class="clothGuessRow">
 					<div class="checkbox">
 						<Checkbox
@@ -234,7 +227,7 @@
 					</div>
 				</div>
 			{/if}
-			{#if db.clothes.length === 2}
+			{#if db.clothes.length >= 2}
 				<div class="clothGuessRow">
 					<div class="checkbox">
 						<Checkbox

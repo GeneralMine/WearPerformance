@@ -13,9 +13,11 @@
 		<div class="format">Your clothing choices</div>
 	</div>
 
+	<img src="/logo.png" alt="">
+
 	<div class="globalStats">
 		<h3>Overall footprint performance</h3>
-		<ProgressBar min="0" max="100" value="50" />
+		<ProgressBar min="0" max="100" value="43" />
 	</div>
 
 	<div class="buttons">
@@ -42,5 +44,10 @@
 	.format {
 		font-weight: bold;
 		font-size: 2rem;
+	}
+
+	img{
+		width: 100%;
+		height: auto;
 	}
 </style>
